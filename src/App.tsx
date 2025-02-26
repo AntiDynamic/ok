@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useDispatch, useSelector } from 'react-redux';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 // Auth
 import { auth, db } from './services/firebase';
@@ -55,67 +57,69 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-            <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
-            <Route path="/services" element={<ServiceListing />} />
-            <Route path="/services/:id" element={<ServiceDetails />} />
-            
-            {/* Protected Routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } />
-            <Route path="/services/create" element={
-              <ProtectedRoute>
-                <CreateService />
-              </ProtectedRoute>
-            } />
-            <Route path="/services/edit/:id" element={
-              <ProtectedRoute>
-                <EditService />
-              </ProtectedRoute>
-            } />
-            <Route path="/bookings" element={
-              <ProtectedRoute>
-                <Bookings />
-              </ProtectedRoute>
-            } />
-            <Route path="/bookings/:id" element={
-              <ProtectedRoute>
-                <BookingDetails />
-              </ProtectedRoute>
-            } />
-            <Route path="/chat" element={
-              <ProtectedRoute>
-                <Chat />
-              </ProtectedRoute>
-            } />
-            <Route path="/chat/:id" element={
-              <ProtectedRoute>
-                <Chat />
-              </ProtectedRoute>
-            } />
-            
-            {/* 404 Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+              <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
+              <Route path="/services" element={<ServiceListing />} />
+              <Route path="/services/:id" element={<ServiceDetails />} />
+              
+              {/* Protected Routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="/services/create" element={
+                <ProtectedRoute>
+                  <CreateService />
+                </ProtectedRoute>
+              } />
+              <Route path="/services/edit/:id" element={
+                <ProtectedRoute>
+                  <EditService />
+                </ProtectedRoute>
+              } />
+              <Route path="/bookings" element={
+                <ProtectedRoute>
+                  <Bookings />
+                </ProtectedRoute>
+              } />
+              <Route path="/bookings/:id" element={
+                <ProtectedRoute>
+                  <BookingDetails />
+                </ProtectedRoute>
+              } />
+              <Route path="/chat" element={
+                <ProtectedRoute>
+                  <Chat />
+                </ProtectedRoute>
+              } />
+              <Route path="/chat/:id" element={
+                <ProtectedRoute>
+                  <Chat />
+                </ProtectedRoute>
+              } />
+              
+              {/* 404 Route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </Provider>
   );
 }
 
